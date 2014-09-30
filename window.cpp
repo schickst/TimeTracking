@@ -45,7 +45,7 @@ void Window::closeEvent(QCloseEvent *event)
 
 void Window::setIcon(int index)
 {
-    QIcon icon(":/images/test.png");
+    QIcon icon(":/images/timer.svg");
     trayIcon->setIcon(icon);
     setWindowIcon(icon);
 
@@ -299,8 +299,11 @@ void Window::writeTask()
     QString line;
 
     // Username
-    //QString user = getenv("USER");     //for MAc or Linux
+#ifdef Q_OS_LINUX
+    QString user = getenv("USER");     //for Mac or Linux
+#else
     QString user = getenv("USERNAME"); //for windows
+#endif
     line.append(user + ";");
     line.append(QDate::currentDate().toString() + ";");     // Datum
     line.append(projectComboBox->currentText() + ";");      // Projekt
