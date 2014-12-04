@@ -18,6 +18,7 @@ Window::Window()
     mainLayout->addWidget(messageGroupBox);
     setLayout(mainLayout);
 
+    setIcon(0);
     trayIcon->show();
 
     setWindowTitle(tr("Gringo"));
@@ -95,11 +96,28 @@ void Window::createMessageGroupBox()
 
     durationLabel = new QLabel(tr("Hours:"));
 
+    loggedHoursStartSpinBox = new QDoubleSpinBox;
+    loggedHoursStartSpinBox->setRange(0.0, 24.0);
+    loggedHoursStartSpinBox->setSingleStep(0.5);
+    loggedHoursStartSpinBox->setSuffix(" h");
+    loggedHoursStartSpinBox->setValue(10.0);
+
     loggedHoursSpinBox = new QDoubleSpinBox;
     loggedHoursSpinBox->setRange(0.0, 24.0);
     loggedHoursSpinBox->setSingleStep(0.5);
     loggedHoursSpinBox->setSuffix(" h");
     loggedHoursSpinBox->setValue(1.0);
+
+    loggedHoursEndSpinBox = new QDoubleSpinBox;
+    loggedHoursEndSpinBox->setRange(0.0, 24.0);
+    loggedHoursEndSpinBox->setSingleStep(0.5);
+    loggedHoursEndSpinBox->setSuffix(" h");
+    loggedHoursEndSpinBox->setValue(11.0);
+
+    connect(loggedHoursStartSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateHoursStartSpinBoxes(double)));
+    connect(loggedHoursSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateHoursSpinBoxes(double)));
+    connect(loggedHoursEndSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateHourEndSpinBoxes(double)));
+
 
     descriptionLabel = new QLabel(tr("Description:"));
     descriptionEdit = new QTextEdit;
@@ -113,7 +131,9 @@ void Window::createMessageGroupBox()
     messageLayout->addWidget(taskLabel, 1, 0);
     messageLayout->addWidget(taskComboBox, 1, 1, 1, 4);
     messageLayout->addWidget(durationLabel, 2, 0);
-    messageLayout->addWidget(loggedHoursSpinBox, 2, 1, 1, 2);
+    messageLayout->addWidget(loggedHoursStartSpinBox, 2, 1, 1, 1);
+    messageLayout->addWidget(loggedHoursSpinBox, 2, 2, 1, 1);
+    messageLayout->addWidget(loggedHoursEndSpinBox, 2, 3, 1, 1);
     messageLayout->addWidget(descriptionLabel, 3, 0);
     messageLayout->addWidget(descriptionEdit, 3, 1, 1, 4);
     messageLayout->addWidget(addButton, 5, 4);
@@ -160,6 +180,25 @@ void Window::updateTaskComboBox(QString project)
     taskComboBox->addItems(projectTaskList.value(project));
     taskComboBox->setCurrentIndex(0);
 }
+
+void Window::updateHoursStartSpinBoxes(double value)
+{
+    double newValue = value + loggedHoursSpinBox->value();
+    loggedHoursEndSpinBox->setValue(newValue);
+}
+
+void Window::updateHoursSpinBoxes(double value)
+{
+    double newValue = loggedHoursStartSpinBox->value() + value;
+    loggedHoursEndSpinBox->setValue(newValue);
+}
+
+void Window::updateHourEndSpinBoxes(double value)
+{
+    double newValue = value - loggedHoursSpinBox->value();
+    loggedHoursStartSpinBox->setValue(newValue);
+}
+
 
 void Window::generateInvoice()
 {
@@ -293,7 +332,7 @@ void Window::writeTask()
      * - Datum
      * - Projekt
      * - Task
-     * - Zeit
+     * - Zeit (Start/Duration/End)
      * - Beschreibung
      */
     QString line;
@@ -308,11 +347,16 @@ void Window::writeTask()
     line.append(QDate::currentDate().toString() + ";");     // Datum
     line.append(projectComboBox->currentText() + ";");      // Projekt
     line.append(taskComboBox->currentText() + ";");         // Task
+    line.append(QString::number(loggedHoursStartSpinBox->value()) + ";");    // Startzeit
+    line.append(QString::number(loggedHoursSpinBox->value()) + ";");         // Dauer
+    line.append(QString::number(loggedHoursEndSpinBox->value()) + ";");    // Endzeit
     line.append(descriptionEdit->toPlainText() + ";");      // Description
     line.append("\n");
 
     stream << line;
     file.close();
+
+    descriptionEdit->clear();
 }
 
 

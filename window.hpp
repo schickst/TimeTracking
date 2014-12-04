@@ -34,6 +34,9 @@ private slots:
     void setIcon(int index);
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void updateTaskComboBox(QString project);
+    void updateHoursStartSpinBoxes(double value);
+    void updateHoursSpinBoxes(double value);
+    void updateHourEndSpinBoxes(double value);
     void showMessage();
 
     void generateInvoice();
@@ -66,7 +69,9 @@ private:
     QLabel *projectLabel;
     QComboBox *projectComboBox;
     QComboBox *taskComboBox;
+    QDoubleSpinBox *loggedHoursStartSpinBox;
     QDoubleSpinBox *loggedHoursSpinBox;
+    QDoubleSpinBox *loggedHoursEndSpinBox;
     QLineEdit *descriptionLineEdit;
 
     QAction *generateInvoiceAction;
