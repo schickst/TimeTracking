@@ -203,7 +203,7 @@ void Window::updateHourEndSpinBoxes(double value)
 void Window::generateInvoice()
 {
     // projekt und task aufwände berechnen
-    QSettings settings("gringo.ini", QSettings::IniFormat);
+    QSettings settings;
 
     // pdflatex starten
     QString templateFileName = settings.value("InvoiceGenerator", "").toString();
@@ -261,7 +261,7 @@ void Window::generateInvoice()
 
 void Window::configureTasks()
 {
-    QSettings settings("gringo.ini", QSettings::IniFormat);
+    QSettings settings;
     QString file = settings.value("TaskFile", "").toString();
 
     if (file.isEmpty()) {
@@ -282,7 +282,7 @@ void Window::configureTasks()
 
 void Window::readProjectTaskFile()
 {    
-    QSettings settings("gringo.ini", QSettings::IniFormat);
+    QSettings settings;
     QString fileName = settings.value("TaskFile", "").toString();
     QFile file(fileName);
 
@@ -316,7 +316,7 @@ void Window::readProjectTaskFile()
 
 void Window::writeTask()
 {
-    QSettings settings("gringo.ini", QSettings::IniFormat);
+    QSettings settings;
     QString fileName = settings.value("LogFile", "").toString();
     QFile file(fileName);
 
