@@ -98,19 +98,19 @@ void Window::createMessageGroupBox()
 
     loggedHoursStartSpinBox = new QDoubleSpinBox;
     loggedHoursStartSpinBox->setRange(0.0, 24.0);
-    loggedHoursStartSpinBox->setSingleStep(0.5);
+    loggedHoursStartSpinBox->setSingleStep(0.25);
     loggedHoursStartSpinBox->setSuffix(" h");
     loggedHoursStartSpinBox->setValue(10.0);
 
     loggedHoursSpinBox = new QDoubleSpinBox;
     loggedHoursSpinBox->setRange(0.0, 24.0);
-    loggedHoursSpinBox->setSingleStep(0.5);
+    loggedHoursSpinBox->setSingleStep(0.25);
     loggedHoursSpinBox->setSuffix(" h");
     loggedHoursSpinBox->setValue(1.0);
 
     loggedHoursEndSpinBox = new QDoubleSpinBox;
     loggedHoursEndSpinBox->setRange(0.0, 24.0);
-    loggedHoursEndSpinBox->setSingleStep(0.5);
+    loggedHoursEndSpinBox->setSingleStep(0.25);
     loggedHoursEndSpinBox->setSuffix(" h");
     loggedHoursEndSpinBox->setValue(11.0);
 
