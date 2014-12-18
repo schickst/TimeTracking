@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+# Initialize config file
+
+GRINGO_CONFIG="$HOME/.config/CubeWorks/Gringo.conf"
+
+if [ ! -f  "$GRINGO_CONFIG" ]
+then
+
+  if [ -z "$EDITOR" ]
+  then
+    EDITOR=gedit
+  fi
+
+  echo "$GRINGO_CONFIG not present, creating a default config"
+  mkdir -p `dirname "$GRINGO_CONFIG"` || exit 1
+  echo "[General]" > "$GRINGO_CONFIG" || exit 1
+  echo "LogFile=$HOME/.gringo/timelog" >> "$GRINGO_CONFIG"
+  echo "TaskFile=$HOME/.gringo/tasks" >> "$GRINGO_CONFIG"
+  echo "TextEditor=$EDITOR" >> "$GRINGO_CONFIG"
+
+  mkdir -p ~/.gringo || exit 1
+  touch ~/.gringo/timelog || exit 1
+  if [ ! -f ~/.gringo/tasks ]
+  then
+    echo "Smaple Project; First Task" > ~/.gringo/tasks || exit 1
+  fi
+
+fi
+
+# run Gringo
+Gringo

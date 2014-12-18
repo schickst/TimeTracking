@@ -11,7 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Gringo
 TEMPLATE = app
 
-
 SOURCES += main.cpp \
     window.cpp
 
@@ -21,4 +20,9 @@ HEADERS  += \
 RESOURCES += \
     systray.qrc
 
+target.path = /bin
+INSTALLS += target
 
+wrapper.files = gringo-timetracking
+wrapper.path = /bin
+INSTALLS += wrapper
